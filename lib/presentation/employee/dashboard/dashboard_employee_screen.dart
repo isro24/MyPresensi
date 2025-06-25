@@ -1,0 +1,273 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:my_presensi/core/constants/colors.dart';
+import 'package:my_presensi/core/extension/int_ext.dart';
+import 'package:my_presensi/presentation/employee/dashboard/dashboard_bloc/dashboard_employee_bloc.dart';
+import 'package:my_presensi/presentation/employee/dashboard/widget/dashboard_card.dart';
+
+class DashboardEmployeeScreen extends StatefulWidget {
+  const DashboardEmployeeScreen({super.key});
+
+  @override
+  State<DashboardEmployeeScreen> createState() => _DashboardEmployeeState();
+}
+
+class _DashboardEmployeeState extends State<DashboardEmployeeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<DashboardBloc>().add(GetDashboardDataEvent());
+  }
+
+  @override
+Widget build(BuildContext context) {
+  return Scaffold(
+    backgroundColor: AppColors.white,
+    body: BlocBuilder<DashboardBloc, DashboardState>(
+      builder: (context, state) {
+        if (state is DashboardLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is DashboardLoaded) {
+          final data = state.dashboard.data;
+          return Stack(
+            children: [
+              Container(
+                height: 140,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(24),
+                  ),
+                ),
+                padding: const EdgeInsets.only(top: 48, left: 16, right: 16),
+                alignment: Alignment.topLeft,
+                child: const Text(
+                  'Dashboard',
+                  style: TextStyle(
+                    color: AppColors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 70),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      Card(
+                        elevation: 3,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  context.go('/profile_employee');
+                                },
+                                borderRadius: BorderRadius.circular(12),
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 25,
+                                      backgroundColor: Colors.grey.shade200,
+                                      backgroundImage: data.photo.isNotEmpty
+                                          ? NetworkImage(data.photo)
+                                          : null,
+                                      child: data.photo.isEmpty
+                                          ? Icon(Icons.person, size: 28, color: AppColors.grey)
+                                          : null,
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          data.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          data.position,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: AppColors.black,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              StreamBuilder<DateTime>(
+                                stream: Stream.periodic(const Duration(seconds: 1), (_) => DateTime.now()),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) return const SizedBox.shrink();
+                                  final now = snapshot.data!;
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(now.formatTanggal, style: const TextStyle(fontSize: 14)),
+                                      const SizedBox(height: 4),
+                                      Text(now.formatJam, style: const TextStyle(fontSize: 14)),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey.shade300),
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+                        child: Column(
+                          children: [
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text('Absen Masuk', style: TextStyle(fontWeight: FontWeight.bold)),
+                                Text('Absen Keluar', style: TextStyle(fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // Text(data.clockIn ?? '--:--:--', style: const TextStyle(fontSize: 18)),
+                                // Text(data.clockOut ?? '--:--:--', style: const TextStyle(fontSize: 18)),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.login),
+                                    label: const Text("Clock In"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.logout),
+                                    label: const Text("Clock Out"),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primary,
+                                      foregroundColor: AppColors.white,
+                                      padding: const EdgeInsets.symmetric(vertical: 14),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      if (data.schedule != null) ...[
+                        Text(
+                          'Jam Kerja :',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          'Masuk: ${data.schedule!.startTime.formatJamWIB}  |  Pulang: ${data.schedule!.endTime.formatJamWIB}',
+                          style: const TextStyle(fontSize: 14, color: AppColors.grey),
+                        ),
+                      ],
+
+                      const SizedBox(height: 4),
+
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.8,
+                        children: [
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 70, 
+                              height: 70,
+                              child: DashboardCard(icon: Icons.note_alt, onTap: () {}),
+                            ),
+                            const SizedBox(height: 4),
+                            const Text('Izin', style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 70, 
+                              height: 70,
+                              child: DashboardCard(icon: Icons.av_timer, onTap: () {}),
+                            ),
+                            const SizedBox(height: 4),
+                            const Text('Lembur', style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            SizedBox(
+                              width: 70, 
+                              height: 70,
+                              child: DashboardCard(icon: Icons.history_edu, onTap: () {}),
+                            ),
+                            const SizedBox(height: 4),
+                            const Text('Riwayat Izin', style: TextStyle(fontSize: 14)),
+                          ],
+                        ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else if (state is DashboardError) {
+          return Center(child: Text('Error: ${state.message}'));
+        }
+        return const SizedBox.shrink();
+      },
+    ),
+  );
+}
+
+}
