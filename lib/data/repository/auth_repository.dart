@@ -43,4 +43,17 @@ class AuthRepository {
       return left('An error occured while logging in.');
     }
   }
+  
+  Future<bool> me() async {
+    try {
+      final response = await _serviceHttpClient.get(
+        'me'
+      );
+      log(response.body);
+      return response.statusCode == 200;
+    } catch (e) {
+      log('Error in me(): $e');
+      return false;
+    }
+  }
 }
