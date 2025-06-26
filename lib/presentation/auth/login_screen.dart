@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/components/buttons.dart';
 import 'package:my_presensi/core/components/spaces.dart';
 import 'package:my_presensi/core/constants/colors.dart';
@@ -164,9 +165,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       final role = state.responseModel.data?.role
                           ?.toLowerCase();
                       if (role == 'admin') {
-                        //
+                        context.go('/admin/dashboard');
                       } else if (role == 'employee') {
-                        //
+                        context.go('/employee/dashboard');
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Role tidak dikenali')),

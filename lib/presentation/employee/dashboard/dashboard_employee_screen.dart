@@ -69,7 +69,7 @@ Widget build(BuildContext context) {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  context.go('/profile_employee');
+                                  context.go('/employee/profile');
                                 },
                                 borderRadius: BorderRadius.circular(12),
                                 child: Row(
