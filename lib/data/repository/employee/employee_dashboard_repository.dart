@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
-import 'package:my_presensi/data/models/response/employee/dashboard_response_model.dart';
+import 'package:my_presensi/data/models/response/employee/employee_dashboard_response_model.dart';
 import 'package:my_presensi/service/service_http_client.dart';
 
 class DashboardRepository {

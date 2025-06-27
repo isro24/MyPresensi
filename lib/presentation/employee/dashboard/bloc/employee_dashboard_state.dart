@@ -1,4 +1,4 @@
-part of 'dashboard_employee_bloc.dart';
+part of 'employee_dashboard_bloc.dart';
 
 sealed class DashboardState {}
 

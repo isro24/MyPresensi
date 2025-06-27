@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/constants/colors.dart';
 import 'package:my_presensi/core/extension/int_ext.dart';
-import 'package:my_presensi/presentation/employee/dashboard/dashboard_bloc/dashboard_employee_bloc.dart';
+import 'package:my_presensi/presentation/employee/dashboard/bloc/employee_dashboard_bloc.dart';
 import 'package:my_presensi/presentation/employee/dashboard/widget/dashboard_card.dart';
 
 class DashboardEmployeeScreen extends StatefulWidget {

@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:my_presensi/data/models/response/employee/dashboard_response_model.dart';
-import 'package:my_presensi/data/repository/dashboard_repository.dart';
+import 'package:my_presensi/data/models/response/employee/employee_dashboard_response_model.dart';
+import 'package:my_presensi/data/repository/employee/employee_dashboard_repository.dart';
 
-part 'dashboard_employee_event.dart';
-part 'dashboard_employee_state.dart';
+part 'employee_dashboard_event.dart';
+part 'employee_dashboard_state.dart';
 
 class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   final DashboardRepository dashboardRepository;
