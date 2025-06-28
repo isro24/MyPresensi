@@ -56,4 +56,16 @@ class AuthRepository {
       return false;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      await _serviceHttpClient.logoutWithToken();
+      print('Logout API berhasil');
+    } catch (e) {
+      log('Error during logout: $e');
+    }
+    await secureStorage.delete(key: 'token');
+    await secureStorage.delete(key: 'userRole');
+  }
+
 }
