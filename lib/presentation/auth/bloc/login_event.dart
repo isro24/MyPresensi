@@ -7,3 +7,5 @@ class LoginRequested extends LoginEvent {
 
   LoginRequested({required this.requestModel});
 }
+
+class LogoutRequested extends LoginEvent {} 
