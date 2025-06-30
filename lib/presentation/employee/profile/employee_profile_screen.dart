@@ -27,7 +27,6 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: ProfileAppBar(
-        backRoute: '/employee/dashboard',
         onNotificationTap: () => context.push('/notifications'),
       ),
       body: BlocBuilder<EmployeeProfileBloc, EmployeeProfileState>(
@@ -44,25 +43,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                   CircleAvatar(
                     radius: 50,
                     backgroundColor: Colors.grey.shade200,
-                    child: data.photo.isNotEmpty
-                      ? ClipOval(
-                          child: Image.network(
-                            data.photo,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Icon(Icons.person, size: 50, color: AppColors.grey);
-                            },
-                            loadingBuilder: (context, child, loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return CircularProgressIndicator(
-                                value: loadingProgress.expectedTotalBytes != null
-                                  ? loadingProgress.cumulativeBytesLoaded / loadingProgress.expectedTotalBytes!
-                                  : null,
-                              );
-                            },
-                          ),
-                        )
-                      : Icon(Icons.person, size: 70, color: AppColors.grey),
+                    backgroundImage: data.photo.isNotEmpty ? NetworkImage(data.photo) : null,
+                    child: data.photo.isEmpty
+                        ? const Icon(Icons.person, size: 50, color: AppColors.grey)
+                        : null,
                   ),
                   const SizedBox(height: 16),
                   Text(
