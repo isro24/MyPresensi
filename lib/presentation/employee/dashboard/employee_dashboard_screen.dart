@@ -5,6 +5,7 @@ import 'package:my_presensi/core/constants/colors.dart';
 import 'package:my_presensi/core/extension/int_ext.dart';
 import 'package:my_presensi/presentation/employee/dashboard/bloc/employee_dashboard_bloc.dart';
 import 'package:my_presensi/presentation/employee/dashboard/widget/dashboard_card.dart';
+import 'package:my_presensi/presentation/employee/dashboard/widget/working_timer.dart';
 
 class DashboardEmployeeScreen extends StatefulWidget {
   const DashboardEmployeeScreen({super.key});
@@ -30,29 +31,35 @@ Widget build(BuildContext context) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is DashboardLoaded) {
           final data = state.dashboard.data;
+          final attendance = data.attendance;
           return Stack(
             children: [
               Container(
-                height: 140,
+                height: 160,
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   borderRadius: const BorderRadius.vertical(
                     bottom: Radius.circular(24),
                   ),
                 ),
-                padding: const EdgeInsets.only(top: 48, left: 16, right: 16),
+                padding: const EdgeInsets.only(top: 58, left: 16, right: 16),
                 alignment: Alignment.topLeft,
-                child: const Text(
-                  'Dashboard',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Selamat datang, ${data.name.split(' ').first} 👋',
+                      style: const TextStyle(
+                        color: AppColors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 70),
+                padding: const EdgeInsets.only(top: 90),
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -151,17 +158,34 @@ Widget build(BuildContext context) {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                // Text(data.clockIn ?? '--:--:--', style: const TextStyle(fontSize: 18)),
-                                // Text(data.clockOut ?? '--:--:--', style: const TextStyle(fontSize: 18)),
+                              Text(
+                                attendance?.clockIn?.toString().substring(11, 19) ?? '--:--:--',
+                                style: const TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                attendance?.clockOut?.toString().substring(11, 19) ?? '--:--:--',
+                                style: const TextStyle(fontSize: 18),
+                              ),
                               ],
                             ),
+                            const SizedBox(height: 5),
+                            if (attendance?.clockIn != null && attendance?.clockOut == null)
+                              Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 12),
+                                child: WorkingTimer(
+                                  endTimeString: data.schedule?.endTime, 
+                                ),
+                              ),
+
                             const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 Expanded(
                                   child: ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.go('/employee/attendance?type=in');
+                                    },
                                     icon: const Icon(Icons.login),
                                     label: const Text("Clock In"),
                                     style: ElevatedButton.styleFrom(
@@ -177,7 +201,9 @@ Widget build(BuildContext context) {
                                 const SizedBox(width: 12),
                                 Expanded(
                                   child: ElevatedButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      context.go('/employee/attendance?type=out');
+                                    },
                                     icon: const Icon(Icons.logout),
                                     label: const Text("Clock Out"),
                                     style: ElevatedButton.styleFrom(
@@ -255,6 +281,7 @@ Widget build(BuildContext context) {
                         ),
                         ],
                       ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                 ),
