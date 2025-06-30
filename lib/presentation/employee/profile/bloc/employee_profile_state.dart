@@ -28,6 +28,7 @@ final class EmployeeProfileError extends EmployeeProfileState {
 
 final class EmployeeProfileUpdateError extends EmployeeProfileState {
   final String message;
+  final EmployeeProfileResponseModel previousProfile;
 
-  EmployeeProfileUpdateError({required this.message});
+  EmployeeProfileUpdateError({required this.message, required this.previousProfile});
 }

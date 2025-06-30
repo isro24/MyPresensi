@@ -15,6 +15,8 @@ class EmployeeProfileBloc extends Bloc<EmployeeProfileEvent, EmployeeProfileStat
       : super(EmployeeProfileInitial()) {
     on<GetEmployeeProfileEvent>(_getEmployeeProfile);
     on<UpdateEmployeeProfileEvent>(_updateEmployeeProfile);
+    on<ResetEmployeeProfileStateEvent>(_resetEmployeeProfileState);
+    
   }
 
   Future<void> _getEmployeeProfile(
@@ -35,13 +37,51 @@ class EmployeeProfileBloc extends Bloc<EmployeeProfileEvent, EmployeeProfileStat
     UpdateEmployeeProfileEvent event,
     Emitter<EmployeeProfileState> emit,
   ) async {
+    EmployeeProfileResponseModel? previousProfile;
+    if (state is EmployeeProfileLoaded) {
+      previousProfile = (state as EmployeeProfileLoaded).profile;
+    } else if (state is EmployeeProfileUpdated) {
+      previousProfile = (state as EmployeeProfileUpdated).profile;
+    }
+
     emit(EmployeeProfileUpdating());
 
-    final result = await employeeProfileRepository.updateEmployeeProfile(event.id, event.request, event.photoFile);
+    final result = await employeeProfileRepository.updateEmployeeProfile(
+      event.id,
+      event.request,
+      event.photoFile,
+    );
 
     result.fold(
-      (error) => emit(EmployeeProfileUpdateError(message: error)),
+      (error) {
+        if (previousProfile != null) {
+          emit(EmployeeProfileUpdateError(
+            message: error,
+            previousProfile: previousProfile!,
+          ));
+        } else {
+          emit(EmployeeProfileError(message: error));
+        }
+      },
       (profile) => emit(EmployeeProfileUpdated(profile: profile)),
     );
+  }
+
+
+  Future<void> _resetEmployeeProfileState(
+    ResetEmployeeProfileStateEvent event,
+    Emitter<EmployeeProfileState> emit,
+  ) async {
+    final currentState = state;
+
+    if (currentState is EmployeeProfileLoaded) {
+      emit(EmployeeProfileLoaded(profile: currentState.profile));
+    } else if (currentState is EmployeeProfileUpdated) {
+      emit(EmployeeProfileLoaded(profile: currentState.profile));
+    } else if (currentState is EmployeeProfileUpdateError) {
+      emit(EmployeeProfileLoaded(profile: currentState.previousProfile));
+    } else {
+      emit(EmployeeProfileInitial());
+    }
   }
 }

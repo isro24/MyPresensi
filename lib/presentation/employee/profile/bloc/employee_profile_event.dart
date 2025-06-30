@@ -4,6 +4,8 @@ sealed class EmployeeProfileEvent {}
 
 class GetEmployeeProfileEvent extends EmployeeProfileEvent {}
 
+class ResetEmployeeProfileStateEvent extends EmployeeProfileEvent {}
+
 class UpdateEmployeeProfileEvent extends EmployeeProfileEvent {
   final int id;
   final File? photoFile;
