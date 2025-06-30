@@ -63,18 +63,41 @@ class Schedule {
       };
 }
 
+class Attendance {
+  final DateTime? clockIn;
+  final DateTime? clockOut;
+
+  Attendance({
+    this.clockIn,
+    this.clockOut,
+  });
+
+  factory Attendance.fromJson(Map<String, dynamic> json) => Attendance(
+        clockIn: json["clock_in"] != null ? DateTime.parse(json["clock_in"]) : null,
+        clockOut: json["clock_out"] != null ? DateTime.parse(json["clock_out"]) : null,
+      );
+
+  Map<String, dynamic> toJson() => {
+        "clock_in": clockIn?.toIso8601String(),
+        "clock_out": clockOut?.toIso8601String(),
+      };
+}
+
 class Data {
   int id;
   String name;
   String photo;
   String position;
   Schedule? schedule;
+  Attendance? attendance;
+
   Data({
     required this.id,
     required this.name,
     required this.photo,
     required this.position,
-    this.schedule
+    this.schedule,
+    this.attendance,
   });
 
   Data copyWith({
@@ -83,33 +106,39 @@ class Data {
     String? photo,
     String? position,
     Schedule? schedule,
+    Attendance? attendance,
   }) => Data(
-    id: id ?? this.id,
-    name: name ?? this.name,
-    photo: photo ?? this.photo,
-    position: position ?? this.position,
-    schedule: schedule ?? this.schedule,
-  );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        photo: photo ?? this.photo,
+        position: position ?? this.position,
+        schedule: schedule ?? this.schedule,
+        attendance: attendance ?? this.attendance,
+      );
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    name: json["name"],
-    photo: json["photo"]?? "",
-    position: json["position"],
-    schedule: json["schedule"] != null
+        id: json["id"],
+        name: json["name"],
+        photo: json["photo"]?? "",
+        position: json["position"],
+        schedule: json["schedule"] != null
             ? Schedule.fromJson(json["schedule"])
             : null,
-  );
+        attendance: json["attendance"] != null
+            ? Attendance.fromJson(json["attendance"])
+            : null,
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "photo": photo,
-    "position": position,
-    "schedule": schedule?.toJson()
-  };
+        "id": id,
+        "name": name,
+        "photo": photo,
+        "position": position,
+        "schedule": schedule?.toJson(),
+        "attendance": attendance?.toJson(),
+      };
 }
