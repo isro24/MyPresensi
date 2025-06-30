@@ -9,7 +9,7 @@ import 'package:mime/mime.dart';
 
 
 class ServiceHttpClient {
-  final String baseUrl = 'http://10.0.2.2:8000/api/';
+  final String baseUrl = 'http://192.168.1.11:8000/api/';
   final secureStorage = FlutterSecureStorage();
 
   //Post Data
@@ -131,6 +131,34 @@ class ServiceHttpClient {
       throw Exception('Error in logout request: $e');
     }
   }
+
+  // Post Data with Token and Multipart for photo
+  Future<http.Response> postMultipartWithToken({
+    required String endPoint,
+    required Map<String, String> fields,
+    required File imageFile,
+    required String imageFieldName,
+  }) async {
+    final token = await secureStorage.read(key: 'token');
+    final url = Uri.parse('$baseUrl$endPoint');
+
+    final request = http.MultipartRequest('POST', url)
+      ..headers['Authorization'] = 'Bearer $token'
+      ..headers['Accept'] = 'application/json'
+      ..fields.addAll(fields);
+
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        imageFieldName,
+        imageFile.path,
+        contentType: MediaType('image', lookupMimeType(imageFile.path) ?? 'jpeg'),
+      ),
+    );
+
+    final streamedResponse = await request.send();
+    return http.Response.fromStream(streamedResponse);
+  }
+
 
   //Put Data with Token and Multipart for Photo
   Future<http.Response> putWithTokenMultipart(
