@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/components/buttons.dart';
 import 'package:my_presensi/core/components/spaces.dart';
 import 'package:my_presensi/core/constants/colors.dart';
+import 'package:my_presensi/core/utils/custome_snackbar.dart';
 import 'package:my_presensi/data/models/request/auth/login_request_model.dart';
 import 'package:my_presensi/presentation/auth/bloc/login_bloc.dart';
 
@@ -158,9 +159,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 BlocConsumer<LoginBloc, LoginState>(
                   listener: (context, state){
                     if (state is LoginFailure){
-                      ScaffoldMessenger.of(
-                        context,
-                        ).showSnackBar(SnackBar(content: Text(state.error)));
+                      showAppSnackBar(context, state.error, type: SnackBarType.error,);
+
                     } else if (state is LoginSuccess) {
                       final role = state.responseModel.data?.role
                           ?.toLowerCase();
@@ -169,9 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       } else if (role == 'employee') {
                         context.go('/employee/dashboard');
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Role tidak dikenali')),
-                        );
+                        showAppSnackBar(context, 'Role tidak dikenali', type: SnackBarType.error,);
                       }
                     }
                   },

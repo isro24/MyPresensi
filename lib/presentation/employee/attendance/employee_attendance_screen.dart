@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/constants/colors.dart';
+import 'package:my_presensi/core/utils/custome_snackbar.dart';
 import 'package:my_presensi/presentation/employee/attendance/bloc/attendance_bloc/employee_attendance_bloc.dart';
 import 'package:my_presensi/presentation/employee/attendance/widget/map_preview.dart';
 
@@ -42,13 +43,12 @@ class _EmployeeAttendanceScreenState extends State<EmployeeAttendanceScreen> {
       body: BlocConsumer<EmployeeAttendanceBloc, EmployeeAttendanceState>(
         listener: (context, state) {
           if (state is AttendanceSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Presensi berhasil")),
-            );
+          showAppSnackBar(context, "Presensi berhasil", type: SnackBarType.success);
+
             context.go('/employee/dashboard');
           } else if (state is AttendanceFailure || state is AttendanceShowError) {
             final message = (state as dynamic).message;
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+              showAppSnackBar(context, message, type: SnackBarType.error);
           }
         },
         builder: (context, state) {
