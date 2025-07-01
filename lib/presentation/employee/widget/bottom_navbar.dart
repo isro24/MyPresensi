@@ -32,26 +32,43 @@ class BottomNavbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final currentIndex = selectedIndex(context);
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) => bottomNav(context, index),
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard), 
-            label: 'Dashboard'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history), 
-            label: 'Riwayat Kehadiran'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person), 
-            label: 'Profil'),
-        ],
-      ),
-    );
+      return Scaffold(
+        body: child,
+        bottomNavigationBar: Theme(
+          data: Theme.of(context).copyWith(
+            splashFactory: NoSplash.splashFactory,
+            highlightColor: Colors.transparent,
+            splashColor: Colors.transparent,
+            hoverColor: Colors.transparent,
+          ),
+          child: Container(
+            decoration: const BoxDecoration(
+              border: Border(
+                top: BorderSide(color: Colors.grey, width: 0.5),
+              ),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: AppColors.white,
+              currentIndex: currentIndex,
+              onTap: (index) => bottomNav(context, index),
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor: AppColors.primary,
+              unselectedItemColor: AppColors.black,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.dashboard_outlined), 
+                  label: 'Dashboard'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history), 
+                  label: 'Riwayat Kehadiran'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outlined), 
+                  label: 'Profil'),
+              ],
+            ),
+          ),
+        ),
+      );
+
   }
 }
