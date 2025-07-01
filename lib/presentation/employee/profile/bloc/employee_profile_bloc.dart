@@ -57,7 +57,7 @@ class EmployeeProfileBloc extends Bloc<EmployeeProfileEvent, EmployeeProfileStat
         if (previousProfile != null) {
           emit(EmployeeProfileUpdateError(
             message: error,
-            previousProfile: previousProfile!,
+            previousProfile: previousProfile,
           ));
         } else {
           emit(EmployeeProfileError(message: error));
