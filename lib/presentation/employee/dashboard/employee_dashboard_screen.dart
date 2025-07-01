@@ -118,6 +118,7 @@ Widget build(BuildContext context) {
                               const Spacer(),
                               StreamBuilder<DateTime>(
                                 stream: Stream.periodic(const Duration(seconds: 1), (_) => DateTime.now()),
+                                initialData: DateTime.now(),
                                 builder: (context, snapshot) {
                                   if (!snapshot.hasData) return const SizedBox.shrink();
                                   final now = snapshot.data!;

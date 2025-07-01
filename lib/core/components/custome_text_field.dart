@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'spaces.dart';
 
 class CustomTextField extends StatelessWidget {
-  final String validator;
+  final String? validator;
   final TextEditingController controller;
   final String label;
   final Function(String value)? onChanged;
@@ -28,7 +28,7 @@ class CustomTextField extends StatelessWidget {
     this.readOnly = false,
     this.maxLines = 1,
     this.decoration,
-    required this.validator,
+    this.validator,
   });
 
   @override
@@ -44,12 +44,12 @@ class CustomTextField extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const SpaceHeight(12.0),
+          const SpaceHeight(3.0),
         ],
         TextFormField(
           autovalidateMode: AutovalidateMode.disabled,
           validator: (vl) {
-            if (vl == null || vl.isEmpty) {
+            if (validator != null && (vl == null || vl.isEmpty)) {
               return validator;
             }
             return null;
@@ -61,7 +61,11 @@ class CustomTextField extends StatelessWidget {
           readOnly: readOnly,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
-            suffixIcon: suffixIcon,
+            suffixIcon: readOnly
+                ? const Icon(Icons.lock_outline, size: 18, color: Colors.grey)
+                : suffixIcon,
+            filled: true,
+            fillColor: readOnly ? Colors.grey.shade100 : Colors.white,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16.0),
               borderSide: const BorderSide(color: Colors.grey),
@@ -71,7 +75,9 @@ class CustomTextField extends StatelessWidget {
               borderSide: const BorderSide(color: Colors.grey),
             ),
             hintText: label,
+            errorStyle: const TextStyle(height: 1),
           ),
+
         ),
       ],
     );
