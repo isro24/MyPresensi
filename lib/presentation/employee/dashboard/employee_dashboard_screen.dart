@@ -185,7 +185,7 @@ Widget build(BuildContext context) {
                                 Expanded(
                                   child: ElevatedButton.icon(
                                     onPressed: () {
-                                      context.go('/employee/attendance?type=in');
+                                      context.go('/employee/attendance/in');
                                     },
                                     icon: const Icon(Icons.login),
                                     label: const Text("Clock In"),
@@ -203,7 +203,7 @@ Widget build(BuildContext context) {
                                 Expanded(
                                   child: ElevatedButton.icon(
                                     onPressed: () {
-                                      context.go('/employee/attendance?type=out');
+                                      context.go('/employee/attendance/out');
                                     },
                                     icon: const Icon(Icons.logout),
                                     label: const Text("Clock Out"),

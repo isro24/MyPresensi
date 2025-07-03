@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:my_presensi/presentation/auth/widget/logout_dialog.dart'; 
 import 'package:my_presensi/core/constants/colors.dart';
 import 'package:my_presensi/presentation/employee/profile/bloc/employee_profile_bloc.dart';
-import 'package:my_presensi/presentation/employee/profile/widget/profile_app_bar.dart';
-import 'package:my_presensi/presentation/employee/profile/widget/profile_item.dart';
+import 'package:my_presensi/presentation/widget/profile_app_bar.dart';
+import 'package:my_presensi/presentation/widget/profile_item.dart';
 import 'package:my_presensi/presentation/employee/profile/widget/stat_attendance.dart';
 
 class EmployeeProfileScreen extends StatefulWidget {
@@ -26,7 +26,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: ProfileAppBar(
+      appBar: CustomeProfileAppBar(
+        title: 'Profil Pegawai',
         onNotificationTap: () => context.push('/notifications'),
       ),
       body: BlocBuilder<EmployeeProfileBloc, EmployeeProfileState>(
