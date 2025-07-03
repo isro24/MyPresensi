@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:my_presensi/core/components/custome_crud_app_bar.dart';
+import 'package:my_presensi/core/layouts/custome_crud_app_bar.dart';
 import 'package:my_presensi/presentation/admin/profile/update/widget/update_profile_form.dart';
 
 class AdminUpdateProfileScreen extends StatefulWidget {
