@@ -92,4 +92,43 @@ class EmployeeAttendanceRepository {
       return Left("Failed to fetch attendance data: $e");
     }
   }
+
+  Future<Either<String, List<Data>>> getAttendanceHistory() async {
+    try {
+      final response = await _serviceHttpClient.get("employee/attendance");
+
+      log("Get History status: ${response.statusCode}");
+      log("Get History body: ${response.body}");
+
+      if (response.statusCode == 200) {
+        final jsonResponse = json.decode(response.body);
+
+        final List<Data> attendanceList = await Future.wait(
+          (jsonResponse["data"] as List).map((x) async {
+            final data = Data.fromMap(x);
+
+            final photoClockInBytes = data.photoClockIn != null
+                ? await _serviceHttpClient.getPrivateImage(data.photoClockIn!)
+                : null;
+
+            final photoClockOutBytes = data.photoClockOut != null
+                ? await _serviceHttpClient.getPrivateImage(data.photoClockOut!)
+                : null;
+
+            return data.copyWith(
+              photoClockInBytes: photoClockInBytes,
+              photoClockOutBytes: photoClockOutBytes,
+            );
+          }),
+        );
+
+        return Right(attendanceList);
+      } else {
+        final errorJson = json.decode(response.body);
+        return Left(errorJson['message'] ?? 'Unknown error while fetching history');
+      }
+    } catch (e) {
+      return Left("Failed to fetch attendance history: $e");
+    }
+  }
 }
