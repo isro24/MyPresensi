@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data'; 
 
 class EmployeeAttendanceResponseModel {
   String message;
@@ -55,6 +56,9 @@ class Data {
   final String? photoClockOut;
   final String? status;
   final String? note;
+  
+  final Uint8List? photoClockInBytes;
+  final Uint8List? photoClockOutBytes;
 
   Data({
     this.id,
@@ -72,6 +76,8 @@ class Data {
     this.photoClockOut,
     this.status,
     this.note,
+    this.photoClockInBytes,
+    this.photoClockOutBytes,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data.fromMap(json);
@@ -86,11 +92,11 @@ class Data {
         location: json["location"],
         clockIn: json["clock_in"] == null ? null : DateTime.parse(json["clock_in"]),
         latitudeClockIn: json["latitude_clock_in"] != null
-              ? double.tryParse(json["latitude_clock_in"].toString())
-              : null,
+            ? double.tryParse(json["latitude_clock_in"].toString())
+            : null,
         longitudeClockIn: json["longitude_clock_in"] != null
-              ? double.tryParse(json["longitude_clock_in"].toString())
-              : null,
+            ? double.tryParse(json["longitude_clock_in"].toString())
+            : null,
         clockOut: json["clock_out"] == null ? null : DateTime.parse(json["clock_out"]),
         latitudeClockOut: json["latitude_clock_out"] != null
             ? double.tryParse(json["latitude_clock_out"].toString())
@@ -113,7 +119,7 @@ class Data {
         "clock_in": clockIn?.toIso8601String(),
         "latitude_clock_in": latitudeClockIn,
         "longitude_clock_in": longitudeClockIn,
-        "clock_out": clockOut,
+        "clock_out": clockOut?.toIso8601String(),
         "latitude_clock_out": latitudeClockOut,
         "longitude_clock_out": longitudeClockOut,
         "photo_clock_in": photoClockIn,
@@ -138,6 +144,8 @@ class Data {
     String? photoClockOut,
     String? status,
     String? note,
+    Uint8List? photoClockInBytes,
+    Uint8List? photoClockOutBytes,
   }) {
     return Data(
       id: id ?? this.id,
@@ -155,6 +163,9 @@ class Data {
       photoClockOut: photoClockOut ?? this.photoClockOut,
       status: status ?? this.status,
       note: note ?? this.note,
+      photoClockInBytes: photoClockInBytes ?? this.photoClockInBytes,
+      photoClockOutBytes: photoClockOutBytes ?? this.photoClockOutBytes,
     );
   }
 }
+
