@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -188,4 +190,52 @@ class ServiceHttpClient {
     final streamedResponse = await request.send();
     return http.Response.fromStream(streamedResponse);
   }
+
+  //Get private image
+  Future<Uint8List?> getPrivateImage(String filename) async {
+    final token = await secureStorage.read(key: 'token');
+    log('TOKEN DIGUNAKAN: $token');
+    final url = Uri.parse('${baseUrl}photo/$filename');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Accept': 'application/json',
+      },
+    );
+
+    log('Image Request URL: $url');
+    log('Status Code: ${response.statusCode}');
+    log('Headers: ${response.headers}');
+    log('Content-Type: ${response.headers['content-type']}');
+
+    if (response.statusCode == 200 &&
+        response.headers['content-type']?.startsWith('image/') == true) {
+      return response.bodyBytes;
+    } else {
+      log('Image load failed, body: ${response.body}');
+      return null;
+    }
+  }
+
+  //Get bytes
+  Future<http.Response> getBytesWithToken(String endpoint) async {
+    final token = await secureStorage.read(key: 'token');
+    final url = Uri.parse('$baseUrl$endpoint');
+
+    try {
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+      return response;
+    } catch (e) {
+      throw Exception('Error in getBytesWithToken: $e');
+    }
+  }
+
 }
