@@ -5,7 +5,7 @@ import 'package:my_presensi/core/constants/colors.dart';
 import 'package:my_presensi/presentation/admin/profile/bloc/admin_profile_bloc.dart';
 import 'package:my_presensi/core/components/error_view.dart'; 
 import 'package:my_presensi/presentation/admin/profile/home/widget/profil_content.dart';
-import 'package:my_presensi/presentation/widget/profile_app_bar.dart';
+import 'package:my_presensi/core/layouts/profile_app_bar.dart';
 
 class AdminProfileScreen extends StatefulWidget {
   const AdminProfileScreen({super.key});
