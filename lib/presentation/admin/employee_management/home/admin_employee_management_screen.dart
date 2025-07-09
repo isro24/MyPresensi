@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/constants/constant.dart';
+import 'package:my_presensi/core/layouts/custome_default_app_bar.dart';
 import 'package:my_presensi/core/utils/custome_snackbar.dart';
 import 'package:my_presensi/core/components/components.dart'; // ⬅️ pastikan komponen globalmu diimpor di sini
 import 'package:my_presensi/presentation/admin/employee_management/bloc/admin_employee_management_bloc.dart';
@@ -37,13 +38,7 @@ class _AdminEmployeeManagementScreenState extends State<AdminEmployeeManagementS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Kelola Karyawan",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-        ),
-        backgroundColor: AppColors.primary,
-      ),
+      appBar: const CustomeDefaultAppBar(title: 'Kelola Karyawan'),
       body: BlocListener<AdminEmployeeManagementBloc, AdminEmployeeManagementState>(
         listener: (context, state) {
           if (state is DeleteEmployeeSuccess) {
