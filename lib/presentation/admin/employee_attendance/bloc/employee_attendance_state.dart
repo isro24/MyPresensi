@@ -11,12 +11,14 @@ class EmployeeAttendanceLoaded extends EmployeeAttendanceState {
   EmployeeAttendanceLoaded(this.data);
 }
 
-class EmployeeAttendanceError extends EmployeeAttendanceState {
-  final String message;
-  EmployeeAttendanceError(this.message);
-}
-
 class EmployeeAttendanceDeleted extends EmployeeAttendanceState {
   final String message;
   EmployeeAttendanceDeleted(this.message);
+}
+
+class EmployeeAttendanceExportedToPdf extends EmployeeAttendanceState {}
+
+class EmployeeAttendanceError extends EmployeeAttendanceState {
+  final String message;
+  EmployeeAttendanceError(this.message);
 }
