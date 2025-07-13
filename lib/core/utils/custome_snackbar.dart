@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum SnackBarType { success, error, info }
+enum SnackBarType { success, error, info, pending }
 
 void showAppSnackBar(
   BuildContext context,
@@ -12,12 +12,14 @@ void showAppSnackBar(
     SnackBarType.success: Colors.green,
     SnackBarType.error: Colors.redAccent,
     SnackBarType.info: Colors.blue,
+    SnackBarType.pending: Colors.grey
   }[type]!;
 
   final icon = {
     SnackBarType.success: Icons.check_circle,
     SnackBarType.error: Icons.error_outline,
     SnackBarType.info: Icons.info_outline,
+    SnackBarType.pending: Icons.access_time
   }[type]!;
 
   ScaffoldMessenger.of(context).showSnackBar(

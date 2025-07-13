@@ -32,4 +32,7 @@ class AppColors {
   static const Color subtitle = Color(0xff7890CD);
 
   static const Color stroke = Color(0xffDBDBDB);
+
+  static const Color grey200 = Color(0xFFEEEEEE);
+
 }
