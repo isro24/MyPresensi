@@ -67,7 +67,9 @@ class AdminEmployeeManagementRepository {
       final response = await _serviceHttpClient.putWithTokenMultipart(
         "admin/employee/$id",
         requestModel.toMap().map((key, value) => MapEntry(key, value ?? '')),
-        requestModel.photo != null ? File(requestModel.photo!) : null,
+        requestModel.photo != null && requestModel.photo!.isNotEmpty
+            ? File(requestModel.photo!)
+            : null,
       );
 
       log("Update Employee Status: ${response.statusCode}");

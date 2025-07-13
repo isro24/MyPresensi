@@ -7,8 +7,19 @@ import 'package:my_presensi/core/utils/custome_snackbar.dart';
 import 'package:my_presensi/presentation/admin/admin_employee_permission/bloc/admin_employee_permission_bloc.dart';
 import 'package:my_presensi/presentation/admin/admin_employee_permission/widget/permission_card.dart';
 
-class AdminEmployeePermissionScreen extends StatelessWidget {
+class AdminEmployeePermissionScreen extends StatefulWidget {
   const AdminEmployeePermissionScreen({super.key});
+
+  @override
+  State<AdminEmployeePermissionScreen> createState() => _AdminEmployeePermissionScreenState();
+}
+
+class _AdminEmployeePermissionScreenState extends State<AdminEmployeePermissionScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<AdminEmployeePermissionBloc>().add(GetAdminEmployeePermissionsEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

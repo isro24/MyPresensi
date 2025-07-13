@@ -115,9 +115,11 @@ class _AdminEmployeeUpdateScreenState extends State<AdminEmployeeUpdateScreen> {
                               backgroundColor: AppColors.grey200,
                               backgroundImage: selectedPhoto != null
                                   ? FileImage(selectedPhoto!)
-                                  : (employee?.employee?.photo != null
-                                      ? NetworkImage(employee!.employee!.photo!)
-                                      : null) as ImageProvider?,
+                                  : (employee?.employee?.photoUrl != null
+                                      ? NetworkImage(employee!.employee!.photoUrl!)
+                                      : null),
+
+
                               child: (selectedPhoto == null && employee?.employee?.photo == null)
                                   ? const Icon(Icons.person, size: 50, color: AppColors.grey)
                                   : null,

@@ -1,9 +1,7 @@
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_presensi/data/models/response/admin/admin_employee_permission_response_model.dart';
 import 'package:my_presensi/presentation/admin/admin_employee_permission/bloc/admin_employee_permission_bloc.dart';
-import 'package:my_presensi/service/service_http_client.dart';
 
 class PermissionCard extends StatelessWidget {
   final AdminEmployeePermissionData permission;
@@ -57,40 +55,22 @@ class PermissionCard extends StatelessWidget {
 }
 
 class _EmployeeAvatar extends StatelessWidget {
-  final String? photoFile;
+  final String? photoUrl;
 
-  const _EmployeeAvatar(this.photoFile);
+  const _EmployeeAvatar(this.photoUrl);
 
   @override
   Widget build(BuildContext context) {
-    if (photoFile == null || photoFile!.isEmpty) {
-      return const CircleAvatar(child: Icon(Icons.person));
-    }
-
-    return FutureBuilder<Uint8List?>(
-      future: _loadPhoto(photoFile!),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircleAvatar(child: CircularProgressIndicator(strokeWidth: 2));
-        }
-
-        if (snapshot.hasError || snapshot.data == null) {
-          return const CircleAvatar(child: Icon(Icons.person));
-        }
-
-        return CircleAvatar(backgroundImage: MemoryImage(snapshot.data!));
-      },
+    return CircleAvatar(
+      radius: 24,
+      backgroundColor: Colors.grey.shade200,
+      backgroundImage: (photoUrl != null && photoUrl!.isNotEmpty)
+          ? NetworkImage(photoUrl!)
+          : null,
+      child: (photoUrl == null || photoUrl!.isEmpty)
+          ? const Icon(Icons.person, color: Colors.grey)
+          : null,
     );
-  }
-
-  Future<Uint8List?> _loadPhoto(String filename) async {
-    try {
-      final response = await ServiceHttpClient().getBytesWithToken('$filename');
-      if (response.statusCode != 200) return null;
-      return response.bodyBytes;
-    } catch (_) {
-      return null;
-    }
   }
 }
 

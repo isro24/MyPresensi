@@ -27,7 +27,6 @@ class AdminEmployeePermissionBloc extends Bloc<AdminEmployeePermissionEvent, Adm
         (error) => emit(AdminEmployeePermissionError(error)),
         (msg) => emit(AdminEmployeePermissionActionSuccess(msg)),
       );
-      add(GetAdminEmployeePermissionsEvent()); 
     });
   }
 }
