@@ -1,122 +1,107 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_presensi/data/repository/admin/admin_dashbaord_repository.dart';
+import 'package:my_presensi/data/repository/admin/admin_employee_management_repository.dart';
+import 'package:my_presensi/data/repository/admin/admin_employee_permission_repository.dart';
+import 'package:my_presensi/data/repository/admin/admin_location_repository.dart';
+import 'package:my_presensi/data/repository/admin/admin_profile_repository.dart';
+import 'package:my_presensi/data/repository/auth_repository.dart';
+import 'package:my_presensi/data/repository/employee/employee_attendance_repository.dart';
+import 'package:my_presensi/data/repository/employee/employee_dashboard_repository.dart';
+import 'package:my_presensi/data/repository/employee/employee_permission_repository.dart';
+import 'package:my_presensi/data/repository/employee/employee_profile_repository.dart';
+import 'package:my_presensi/presentation/admin/admin_employee_permission/bloc/admin_employee_permission_bloc.dart';
+import 'package:my_presensi/presentation/admin/dashboard/bloc/admin_dashboard_bloc.dart';
+import 'package:my_presensi/presentation/admin/employee_management/bloc/admin_employee_management_bloc.dart';
+import 'package:my_presensi/presentation/admin/location/location_bloc/location_bloc.dart';
+import 'package:my_presensi/presentation/admin/profile/bloc/admin_profile_bloc.dart';
+import 'package:my_presensi/presentation/auth/bloc/login_bloc.dart';
+import 'package:my_presensi/presentation/employee/attendance/bloc/attendance_bloc/employee_attendance_bloc.dart';
+import 'package:my_presensi/presentation/employee/attendance/bloc/camera_bloc/camera_bloc.dart';
+import 'package:my_presensi/presentation/employee/attendance_history/bloc/attendance_history_bloc.dart';
+import 'package:my_presensi/presentation/employee/dashboard/bloc/employee_dashboard_bloc.dart';
+import 'package:my_presensi/presentation/employee/employee_permission/bloc/employee_permission_bloc.dart';
+import 'package:my_presensi/presentation/employee/profile/bloc/employee_profile_bloc.dart';
+import 'package:my_presensi/route.dart';
+import 'package:my_presensi/service/service_http_client.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id', null);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  const MyApp({super.key}); 
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+
+        BlocProvider(
+          create: (context) =>
+              LoginBloc(authRepository: AuthRepository(ServiceHttpClient())),
         ),
+
+        //Employee
+        BlocProvider(
+          create: (context) =>
+            DashboardBloc(dashboardRepository: DashboardRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            EmployeeProfileBloc(employeeProfileRepository: EmployeeProfileRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            CameraBloc(employeeAttendanceRepository: EmployeeAttendanceRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            EmployeeAttendanceBloc(employeeAttendanceRepository: EmployeeAttendanceRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            EmployeeAttendanceHistoryBloc(employeeAttendanceRepository: EmployeeAttendanceRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            EmployeePermissionBloc(repository: EmployeePermissionRepository(ServiceHttpClient())),
+        ),
+
+        //Admin
+        BlocProvider(
+          create: (context) =>
+            AdminEmployeeManagementBloc(adminEmployeeManagementRepository: AdminEmployeeManagementRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            AdminProfileBloc(adminProfileRepository: AdminProfileRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            AdminDashboardBloc(adminDashboardRepository: AdminDashboardRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) =>
+            AdminLocationBloc(adminLocationRepository: AdminLocationRepository(ServiceHttpClient()))
+        ),
+        BlocProvider(
+          create: (context) => 
+            AdminEmployeePermissionBloc(adminEmployeePermissionRepository: AdminEmployeePermissionRepository(ServiceHttpClient())),
+        ),
+
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'MyPresensi',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        ),
+        routerConfig: router,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
