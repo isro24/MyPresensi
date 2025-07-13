@@ -14,6 +14,15 @@ class CustomeCrudAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.actions,
   });
 
+  void _handleBack(BuildContext context) {
+    final router = GoRouter.of(context);
+    if (router.canPop()) {
+      router.pop();
+    } else {
+      router.go('/employee/dashboard'); 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -22,7 +31,7 @@ class CustomeCrudAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: showBackButton
           ? IconButton(
               icon: const Icon(Icons.arrow_back),
-              onPressed: () => context.pop(),
+              onPressed: () => _handleBack(context),
             )
           : null,
       actions: actions,
