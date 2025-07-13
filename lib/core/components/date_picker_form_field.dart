@@ -27,6 +27,8 @@ class DatePickerFormField extends StatelessWidget {
       readOnly: true,
       decoration: InputDecoration(
         labelText: label,
+        filled: true,
+        fillColor: Colors.white,
         suffixIcon: const Icon(Icons.calendar_today),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
