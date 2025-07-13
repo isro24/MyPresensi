@@ -11,7 +11,7 @@ import 'package:mime/mime.dart';
 
 
 class ServiceHttpClient {
-  final String baseUrl = 'http://192.168.1.11:8000/api/';
+  final String baseUrl = 'http://192.168.1.15:8000/api/';
   final secureStorage = FlutterSecureStorage();
 
   //Post Data
@@ -237,5 +237,29 @@ class ServiceHttpClient {
       throw Exception('Error in getBytesWithToken: $e');
     }
   }
+
+  // PATCH Data with Token
+  Future<http.Response> patchWithToken(
+    String endPoint,
+    Map<String, dynamic> body,
+  ) async {
+    final url = Uri.parse('$baseUrl$endPoint');
+    final token = await secureStorage.read(key: 'token');
+    try {
+      final response = await http.patch(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body),
+      );
+      return response;
+    } catch (e) {
+      throw Exception('Error in patch request: $e');
+    }
+  }
+
 
 }
