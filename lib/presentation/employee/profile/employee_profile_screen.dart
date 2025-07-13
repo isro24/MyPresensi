@@ -89,10 +89,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       children: [
                         StatAttendance(label: "Hadir", value: data.summary.hadir, icon: Icons.check_circle, color: Colors.green),
                         StatAttendance(label: "Telat", value: data.summary.telat, icon: Icons.access_time, color: Colors.orange),
-                        StatAttendance(label: "Izin", value: data.summary.izin, icon: Icons.info_outline, color: Colors.blue),
-                        StatAttendance(label: "Sakit", value: data.summary.sakit, icon: Icons.healing, color: Colors.indigo),
+                        StatAttendance(label: "Izin", value: data.izinSummary.izin, icon: Icons.info_outline, color: Colors.blue),
+                        StatAttendance(label: "Sakit", value: data.izinSummary.sakit, icon: Icons.healing, color: Colors.indigo),
                         StatAttendance(label: "Alfa", value: data.summary.alfa, icon: Icons.cancel, color: Colors.red),
-                        StatAttendance(label: "Cuti", value: data.summary.cuti, icon: Icons.beach_access, color: Colors.teal),
+                        StatAttendance(label: "Cuti", value: data.izinSummary.cuti, icon: Icons.beach_access, color: Colors.teal),
                       ],
                     ),
                   ),
