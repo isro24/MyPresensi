@@ -18,5 +18,24 @@ final class LoginFailure extends LoginState {
   LoginFailure({required this.error});
 }
 
+final class ForgotPasswordSuccess extends LoginState {
+  final String message;
+  final String email;
+  final String token;
+
+  ForgotPasswordSuccess({
+    required this.message,
+    required this.email,
+    required this.token,
+  });
+}
+
+
+final class ResetPasswordSuccess extends LoginState {
+  final String message;
+
+  ResetPasswordSuccess({required this.message});
+}
+
 final class LogoutSuccess extends LoginState {}
 
