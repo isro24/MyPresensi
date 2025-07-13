@@ -115,6 +115,7 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       ),
                     ),
                   ),  
+                  const SizedBox(height: 24),
                   const SizedBox(height: 12),
                   const Divider(),
                   ListTile(

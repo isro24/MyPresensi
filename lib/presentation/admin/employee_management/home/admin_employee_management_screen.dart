@@ -47,6 +47,7 @@ class _AdminEmployeeManagementScreenState extends State<AdminEmployeeManagementS
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.grey200,
       appBar: const CustomeDefaultAppBar(title: 'Kelola Karyawan'),
       body: Column(
         children: [

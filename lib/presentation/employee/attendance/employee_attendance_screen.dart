@@ -49,6 +49,7 @@ class _EmployeeAttendanceScreenState extends State<EmployeeAttendanceScreen> {
           } else if (state is AttendanceFailure || state is AttendanceShowError) {
             final message = (state as dynamic).message;
               showAppSnackBar(context, message, type: SnackBarType.error);
+              context.read<EmployeeAttendanceBloc>().add(LoadCurrentLocation());
           }
         },
         builder: (context, state) {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_presensi/core/components/components.dart';
+import 'package:my_presensi/core/constants/colors.dart';
 import 'package:my_presensi/core/layouts/custome_default_app_bar.dart';
 import 'package:my_presensi/core/utils/custome_snackbar.dart';
 import 'package:my_presensi/data/repository/admin/admin_employee_attendance_repository.dart';
@@ -53,6 +54,7 @@ class _AdminEmployeeAttendanceScreenState extends State<AdminEmployeeAttendanceS
     return BlocProvider(
       create: (_) => attendanceBloc,
       child: Scaffold(
+        backgroundColor: AppColors.grey200,
         appBar: const CustomeDefaultAppBar(title: 'Presensi Karyawan'),
         body: Column(
           children: [
