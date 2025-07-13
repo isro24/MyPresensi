@@ -44,35 +44,69 @@ class EmployeeProfileResponseModel {
 class AttendanceSummary {
   final int hadir;
   final int telat;
-  final int izin;
-  final int sakit;
   final int alfa;
-  final int cuti;
 
   AttendanceSummary({
     required this.hadir,
     required this.telat,
-    required this.izin,
-    required this.sakit,
     required this.alfa,
-    required this.cuti,
   });
+
+  AttendanceSummary copyWith({
+    int? hadir,
+    int? telat,
+    int? alfa,
+  }) =>
+      AttendanceSummary(
+        hadir: hadir ?? this.hadir,
+        telat: telat ?? this.telat,
+        alfa: alfa ?? this.alfa,
+      );
 
   factory AttendanceSummary.fromJson(Map<String, dynamic> json) => AttendanceSummary(
         hadir: json['hadir'] ?? 0,
         telat: json['telat'] ?? 0,
-        izin: json['izin'] ?? 0,
-        sakit: json['sakit'] ?? 0,
         alfa: json['alfa'] ?? 0,
-        cuti: json['cuti'] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
         'hadir': hadir,
         'telat': telat,
+        'alfa': alfa,
+      };
+}
+
+class IzinSummary {
+  final int izin;
+  final int sakit;
+  final int cuti;
+
+  IzinSummary({
+    required this.izin,
+    required this.sakit,
+    required this.cuti,
+  });
+
+  IzinSummary copyWith({
+    int? izin,
+    int? sakit,
+    int? cuti,
+  }) =>
+      IzinSummary(
+        izin: izin ?? this.izin,
+        sakit: sakit ?? this.sakit,
+        cuti: cuti ?? this.cuti,
+      );
+
+  factory IzinSummary.fromJson(Map<String, dynamic> json) => IzinSummary(
+        izin: json['izin'] ?? 0,
+        sakit: json['sakit'] ?? 0,
+        cuti: json['cuti'] ?? 0,
+      );
+
+  Map<String, dynamic> toJson() => {
         'izin': izin,
         'sakit': sakit,
-        'alfa': alfa,
         'cuti': cuti,
       };
 }
@@ -90,6 +124,7 @@ class Data {
   final String address;
   final String photo;
   final AttendanceSummary summary;
+  final IzinSummary izinSummary;
 
   Data({
     required this.id,
@@ -104,6 +139,7 @@ class Data {
     required this.address,
     required this.photo,
     required this.summary,
+    required this.izinSummary,
   });
 
   Data copyWith({
@@ -119,6 +155,7 @@ class Data {
     String? address,
     String? photo,
     AttendanceSummary? summary,
+    IzinSummary? izinSummary,
   }) =>
       Data(
         id: id ?? this.id,
@@ -133,6 +170,7 @@ class Data {
         address: address ?? this.address,
         photo: photo ?? this.photo,
         summary: summary ?? this.summary,
+        izinSummary: izinSummary ?? this.izinSummary,
       );
 
   factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
@@ -151,8 +189,11 @@ class Data {
         phone: json["phone"] ?? '',
         address: json["address"] ?? '',
         photo: json["photo"] ?? '',
-        summary: AttendanceSummary.fromJson(json),
-      );
+        summary: AttendanceSummary.fromJson(json["summary"]),
+        izinSummary: json["izin_summary"] != null
+            ? IzinSummary.fromJson(json["izin_summary"])
+            : IzinSummary(izin: 0, sakit: 0, cuti: 0),
+  );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -166,6 +207,7 @@ class Data {
         "phone": phone,
         "address": address,
         "photo": photo,
-        "summary": summary.toJson
+        "summary": summary.toJson(),
+        "izin_summary": izinSummary.toJson(),
       };
 }
