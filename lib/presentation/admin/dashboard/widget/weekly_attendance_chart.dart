@@ -38,8 +38,9 @@ class WeeklyAttendanceChart extends StatelessWidget {
                 getTitlesWidget: (value, _) {
                   final index = value.toInt();
                   if (index < data!.length) {
-                    return Text(data![index].date?.substring(0, 3) ?? '',
-                        style: const TextStyle(fontSize: 10));
+                    final fullDate = data![index].date ?? '';
+                    final label = _getDayLabel(fullDate);
+                    return Text(label, style: const TextStyle(fontSize: 10));
                   }
                   return const Text('');
                 },
@@ -73,3 +74,14 @@ class WeeklyAttendanceChart extends StatelessWidget {
     );
   }
 }
+
+String _getDayLabel(String date) {
+  try {
+    final parsed = DateTime.parse(date);
+    const days = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+    return days[parsed.weekday % 7];
+  } catch (_) {
+    return date.length >= 3 ? date.substring(0, 3) : date;
+  }
+}
+
